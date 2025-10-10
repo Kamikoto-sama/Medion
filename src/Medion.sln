@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{984591CE-F8A5-457C-98A3-9A7036C626A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medion.Common", "Medion.Common\Medion.Common.csproj", "{DA668608-27B1-4C10-A060-E16EF63967BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medion.Upsert", "Medion.Upsert\Medion.Upsert.csproj", "{EC13A927-EB26-43D3-9895-BA8B3C3DFD0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{984591CE-F8A5-457C-98A3-9A7036C626A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{984591CE-F8A5-457C-98A3-9A7036C626A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{984591CE-F8A5-457C-98A3-9A7036C626A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA668608-27B1-4C10-A060-E16EF63967BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA668608-27B1-4C10-A060-E16EF63967BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA668608-27B1-4C10-A060-E16EF63967BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA668608-27B1-4C10-A060-E16EF63967BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC13A927-EB26-43D3-9895-BA8B3C3DFD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC13A927-EB26-43D3-9895-BA8B3C3DFD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC13A927-EB26-43D3-9895-BA8B3C3DFD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC13A927-EB26-43D3-9895-BA8B3C3DFD0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
