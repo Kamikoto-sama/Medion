@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Extensions.DependencyInjection.Medion.Common;
+﻿namespace Microsoft.Extensions.DependencyInjection.Medion.Core;
 
 public static class ServiceDescriptorFactory
 {

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection.Medion.Common;
+using Microsoft.Extensions.DependencyInjection.Medion.Core;
 
 namespace Microsoft.Extensions.DependencyInjection.Medion.Upsert;
 

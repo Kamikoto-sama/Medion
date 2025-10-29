@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Medion.Common\Medion.Common.csproj" />
+        <ProjectReference Include="..\Medion.Core\Medion.Core.csproj"/>
     </ItemGroup>
 
 </Project>
