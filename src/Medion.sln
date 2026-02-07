@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medion.Upsert", "Medion.Ups
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medion.DynamicServiceProvider", "Medion.DynamicServiceProvider\Medion.DynamicServiceProvider.csproj", "{D15E161C-F23B-4AB8-973C-26614EA0E415}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medion.DynamicInjection", "Medion.DynamicInjection\Medion.DynamicInjection.csproj", "{1E69A538-7252-453D-9D46-E0A836C027C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{D15E161C-F23B-4AB8-973C-26614EA0E415}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D15E161C-F23B-4AB8-973C-26614EA0E415}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D15E161C-F23B-4AB8-973C-26614EA0E415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E69A538-7252-453D-9D46-E0A836C027C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E69A538-7252-453D-9D46-E0A836C027C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E69A538-7252-453D-9D46-E0A836C027C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E69A538-7252-453D-9D46-E0A836C027C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

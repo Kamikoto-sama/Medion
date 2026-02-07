@@ -1,0 +1,3 @@
+﻿namespace Medion.DynamicInjection;
+
+internal struct DynamicInjectionServiceKey;
