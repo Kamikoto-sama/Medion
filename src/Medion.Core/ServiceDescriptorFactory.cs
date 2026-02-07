@@ -1,12 +1,12 @@
 namespace Microsoft.Extensions.DependencyInjection.Medion.Core;
 
 /// <summary>
-///     Factory for creating and manipulating <see cref="ServiceDescriptor" /> instances.
+/// Factory for creating and manipulating <see cref="ServiceDescriptor" /> instances.
 /// </summary>
 public static class ServiceDescriptorFactory
 {
     /// <summary>
-    ///     Creates a new <see cref="ServiceDescriptor" /> based on the specified parameters.
+    /// Creates a new <see cref="ServiceDescriptor" /> based on the specified parameters.
     /// </summary>
     /// <param name="lifetime">The lifetime of the service.</param>
     /// <param name="serviceType">The service type to register.</param>
@@ -39,30 +39,47 @@ public static class ServiceDescriptorFactory
                     implementationInstance)
                 : new ServiceDescriptor(serviceType, implementationInstance);
         if (implementationFactory != null)
-            return new ServiceDescriptor(serviceType, implementationFactory,
-                lifetime);
+            return hasKey
+                ? new ServiceDescriptor(serviceType, serviceKey, (s, _) => implementationFactory(s), lifetime)
+                : new ServiceDescriptor(serviceType, implementationFactory, lifetime);
         if (keyedImplementationFactory != null)
             return hasKey
-                ? new ServiceDescriptor(serviceType, serviceKey,
-                    keyedImplementationFactory, lifetime)
-                : new ServiceDescriptor(serviceType,
-                    s => keyedImplementationFactory(s, null), lifetime);
+                ? new ServiceDescriptor(serviceType, serviceKey, keyedImplementationFactory, lifetime)
+                : new ServiceDescriptor(serviceType, s => keyedImplementationFactory(s, null), lifetime);
 
-        throw new ArgumentException("At least one implementation must be specified.");
+        throw new InvalidOperationException("At least one implementation must be specified.");
     }
 
     /// <summary>
-    ///     Creates a new <see cref="ServiceDescriptor" /> by copying an existing one and overriding provided parameters.
+    /// Creates a new <see cref="ServiceDescriptor" /> by copying an existing one and overriding provided parameters.
     /// </summary>
     /// <param name="descriptor">The source <see cref="ServiceDescriptor" /> to copy.</param>
-    /// <param name="lifetime">The new lifetime, or <c>null</c> to keep the existing one.</param>
-    /// <param name="serviceKey">The new service key, or <c>null</c> to keep the existing one.</param>
-    /// <param name="serviceType">The new service type, or <c>null</c> to keep the existing one.</param>
-    /// <param name="implementationType">The new implementation type, or <c>null</c> to keep the existing one.</param>
-    /// <param name="implementationInstance">The new implementation instance, or <c>null</c> to keep the existing one.</param>
-    /// <param name="implementationFactory">The new implementation factory, or <c>null</c> to keep the existing one.</param>
-    /// <param name="keyedImplementationFactory">The new keyed implementation factory, or <c>null</c> to keep the existing one.</param>
-    /// <param name="removeKey">If <c>true</c>, removes the service key from the descriptor.</param>
+    /// <param name="lifetime">The new lifetime.</param>
+    /// <param name="serviceKey">
+    /// The new service key.
+    /// Turns not keyed service into keyed one, replacing implementation* with keyedImplementation* 
+    /// </param>
+    /// <param name="serviceType">The new service type.</param>
+    /// <param name="implementationType">
+    /// The new implementation type. Will be used as keyedImplementationType,
+    /// if <paramref name="descriptor"/> is keyed or <paramref name="serviceKey"/> provided
+    /// </param>
+    /// <param name="implementationInstance">
+    /// The new implementation instance. Will be used as keyedImplementationInstance,
+    /// if <paramref name="descriptor"/> is keyed or <paramref name="serviceKey"/> provided
+    /// </param>
+    /// <param name="implementationFactory">
+    /// The new implementation factory. Will be used as keyedImplementationFactory,
+    /// if <paramref name="descriptor"/> is keyed or <paramref name="serviceKey"/> provided
+    /// </param>
+    /// <param name="keyedImplementationFactory">
+    /// The new keyed implementation factory. Will be used as implementationFactory,
+    /// if <paramref name="descriptor"/> is not keyed or <paramref name="removeKey"/> is <c>true</c>
+    /// </param>
+    /// <param name="removeKey">
+    /// If <c>true</c>, removes the service key from the descriptor.
+    /// Turns keyed service into not keyed, replacing keyedImplementation* with implementation*
+    /// </param>
     /// <returns>A new <see cref="ServiceDescriptor" /> with the specified changes applied.</returns>
     public static ServiceDescriptor CopyWith(
         this ServiceDescriptor descriptor,
