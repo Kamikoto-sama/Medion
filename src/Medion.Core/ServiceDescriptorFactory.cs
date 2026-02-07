@@ -1,7 +1,22 @@
-﻿namespace Microsoft.Extensions.DependencyInjection.Medion.Core;
+namespace Microsoft.Extensions.DependencyInjection.Medion.Core;
 
+/// <summary>
+///     Factory for creating and manipulating <see cref="ServiceDescriptor" /> instances.
+/// </summary>
 public static class ServiceDescriptorFactory
 {
+    /// <summary>
+    ///     Creates a new <see cref="ServiceDescriptor" /> based on the specified parameters.
+    /// </summary>
+    /// <param name="lifetime">The lifetime of the service.</param>
+    /// <param name="serviceType">The service type to register.</param>
+    /// <param name="serviceKey">The key for the service, if any.</param>
+    /// <param name="implementationType">The implementation type.</param>
+    /// <param name="implementationInstance">The implementation instance.</param>
+    /// <param name="implementationFactory">The factory function for creating the implementation.</param>
+    /// <param name="keyedImplementationFactory">The keyed factory function for creating the implementation.</param>
+    /// <returns>A <see cref="ServiceDescriptor" /> configured according to the provided parameters.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when no valid implementation configuration is provided.</exception>
     public static ServiceDescriptor Create(
         ServiceLifetime lifetime,
         Type serviceType,
@@ -26,12 +41,6 @@ public static class ServiceDescriptorFactory
         if (implementationFactory != null)
             return new ServiceDescriptor(serviceType, implementationFactory,
                 lifetime);
-        if (implementationFactory != null)
-            return hasKey
-                ? new ServiceDescriptor(serviceType, serviceKey,
-                    (s, _) => implementationFactory(s), lifetime)
-                : new ServiceDescriptor(serviceType, implementationFactory,
-                    lifetime);
         if (keyedImplementationFactory != null)
             return hasKey
                 ? new ServiceDescriptor(serviceType, serviceKey,
@@ -39,9 +48,22 @@ public static class ServiceDescriptorFactory
                 : new ServiceDescriptor(serviceType,
                     s => keyedImplementationFactory(s, null), lifetime);
 
-        throw new Exception();
+        throw new ArgumentException("At least one implementation must be specified.");
     }
 
+    /// <summary>
+    ///     Creates a new <see cref="ServiceDescriptor" /> by copying an existing one and overriding provided parameters.
+    /// </summary>
+    /// <param name="descriptor">The source <see cref="ServiceDescriptor" /> to copy.</param>
+    /// <param name="lifetime">The new lifetime, or <c>null</c> to keep the existing one.</param>
+    /// <param name="serviceKey">The new service key, or <c>null</c> to keep the existing one.</param>
+    /// <param name="serviceType">The new service type, or <c>null</c> to keep the existing one.</param>
+    /// <param name="implementationType">The new implementation type, or <c>null</c> to keep the existing one.</param>
+    /// <param name="implementationInstance">The new implementation instance, or <c>null</c> to keep the existing one.</param>
+    /// <param name="implementationFactory">The new implementation factory, or <c>null</c> to keep the existing one.</param>
+    /// <param name="keyedImplementationFactory">The new keyed implementation factory, or <c>null</c> to keep the existing one.</param>
+    /// <param name="removeKey">If <c>true</c>, removes the service key from the descriptor.</param>
+    /// <returns>A new <see cref="ServiceDescriptor" /> with the specified changes applied.</returns>
     public static ServiceDescriptor CopyWith(
         this ServiceDescriptor descriptor,
         ServiceLifetime? lifetime = null,
