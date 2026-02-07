@@ -5,8 +5,8 @@ namespace Medion.DynamicServiceProvider;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    ///     Builds a dynamic service provider with the specified options.
-    ///     Which can be rebuilt with different services afterward
+    /// Builds a dynamic service provider with the specified options.
+    /// Which can be rebuilt with different services afterward
     /// </summary>
     /// <param name="services">The service collection to build from.</param>
     /// <param name="options">The service provider options.</param>
@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    ///     Builds a dynamic service provider with default options.
+    /// Builds a dynamic service provider with default options.
     /// </summary>
     /// <param name="services">The service collection to build from.</param>
     /// <returns>A new dynamic service provider.</returns>
