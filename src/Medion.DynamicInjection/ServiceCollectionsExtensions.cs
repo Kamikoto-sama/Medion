@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -32,7 +33,7 @@ public static class ServiceCollectionsExtensions
             .Where(t => t != null)
             .SelectMany(t => t!.GetConstructors()
                 .SelectMany(c => c.GetParameters())
-                .Where(p => p.CustomAttributes.Any(a => a.AttributeType == typeof(DynamicInjectionAttribute)))
+                .Where(p => p.GetCustomAttribute<DynamicInjectionAttribute>() != null)
                 .Select(p => p.ParameterType))
             .ToArray();
 

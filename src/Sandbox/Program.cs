@@ -8,21 +8,26 @@ internal static class Program
     public static void Main(string[] args)
     {
         var services = new ServiceCollection();
-        services.AddTransient(typeof(IService<>), typeof(Service<>));
+        services.AddTransient<IServiceB, ServiceB>();
+        services.AddTransient(typeof(IServiceA<>), typeof(ServiceA<>));
         services.AddAllDynamicInjectionArgTypes();
 
         var serviceProvider = services.BuildServiceProvider();
-        var service = serviceProvider.GetRequiredServiceWithArgs<IService<int>, string>("hello");
+        var service = serviceProvider.GetRequiredServiceWithArgs<IServiceA<int>, string>("hello");
         Console.WriteLine(service.Name);
     }
 }
 
-public interface IService<T>
+public interface IServiceA<T>
 {
     public string Name { get; }
 }
 
-public class Service<T>([DynamicInjection] string name) : IService<T>
+public interface IServiceB;
+
+public class ServiceB : IServiceB;
+
+public class ServiceA<T>(IServiceB serviceB, [DynamicInjection] string name) : IServiceA<T>
 {
     public string Name { get; } = name;
 }
