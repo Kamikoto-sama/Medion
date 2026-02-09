@@ -29,23 +29,23 @@ public static class ServiceDescriptorFactory
         var hasKey = serviceKey != null;
         if (implementationType != null)
             return hasKey
-                ? new ServiceDescriptor(serviceType, serviceKey,
+                ? new ServiceDescriptorCopy(serviceType, serviceKey,
                     implementationType, lifetime)
-                : new ServiceDescriptor(serviceType, implementationType,
+                : new ServiceDescriptorCopy(serviceType, implementationType,
                     lifetime);
         if (implementationInstance != null)
             return hasKey
-                ? new ServiceDescriptor(serviceType, serviceKey,
+                ? new ServiceDescriptorCopy(serviceType, serviceKey,
                     implementationInstance)
-                : new ServiceDescriptor(serviceType, implementationInstance);
+                : new ServiceDescriptorCopy(serviceType, implementationInstance);
         if (implementationFactory != null)
             return hasKey
-                ? new ServiceDescriptor(serviceType, serviceKey, (s, _) => implementationFactory(s), lifetime)
-                : new ServiceDescriptor(serviceType, implementationFactory, lifetime);
+                ? new ServiceDescriptorCopy(serviceType, serviceKey, (s, _) => implementationFactory(s), lifetime)
+                : new ServiceDescriptorCopy(serviceType, implementationFactory, lifetime);
         if (keyedImplementationFactory != null)
             return hasKey
-                ? new ServiceDescriptor(serviceType, serviceKey, keyedImplementationFactory, lifetime)
-                : new ServiceDescriptor(serviceType, s => keyedImplementationFactory(s, null), lifetime);
+                ? new ServiceDescriptorCopy(serviceType, serviceKey, keyedImplementationFactory, lifetime)
+                : new ServiceDescriptorCopy(serviceType, s => keyedImplementationFactory(s, null), lifetime);
 
         throw new InvalidOperationException("At least one implementation must be specified.");
     }
