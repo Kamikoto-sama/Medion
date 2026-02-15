@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Medion.DynamicInjection;
@@ -5,21 +6,33 @@ namespace Medion.DynamicInjection;
 public static class ServiceProviderExtensions
 {
     /// <summary>
-    ///     Retrieves a required service of type <typeparamref name="TService" /> and injects the specified argument into its
-    ///     dependencies.
+    /// Retrieves the required service of type <typeparamref name="T" />
+    /// injecting the specified arguments as dependencies.
     /// </summary>
-    /// <typeparam name="TService">The type of service to retrieve.</typeparam>
-    /// <typeparam name="TArg">The type of argument to inject.</typeparam>
+    /// <typeparam name="T">The type of service to retrieve.</typeparam>
     /// <param name="serviceProvider">The service provider.</param>
-    /// <param name="arg">The argument to inject.</param>
+    /// <param name="args">The arguments to inject.</param>
     /// <returns>The requested service with the argument injected.</returns>
-    public static TService GetRequiredServiceWithArgs<TService, TArg>(this IServiceProvider serviceProvider, TArg arg)
-        where TService : notnull
+    public static T GetRequiredServiceWithArgs<T>(
+        this IServiceProvider serviceProvider,
+        params object[] args)
+        where T : notnull
     {
-        var argContainer = serviceProvider.GetRequiredService<ArgContainer<TArg>>();
-        argContainer.Arg.Value = arg;
-        var service = serviceProvider.GetRequiredService<TService>();
-        argContainer.Arg.Value = default;
+        var containers = new List<IArgContainer>();
+        var fillContainer = typeof(ServiceProviderExtensions)
+            .GetMethod(nameof(FillContainer), BindingFlags.NonPublic | BindingFlags.Static)!;
+        foreach (var arg in args)
+            fillContainer.MakeGenericMethod(arg.GetType()).Invoke(null, [arg, serviceProvider, containers]);
+
+        var service = serviceProvider.GetRequiredService<T>();
+        containers.ForEach(c => c.ClearArg());
         return service;
+    }
+
+    private static void FillContainer<T>(T arg, IServiceProvider serviceProvider, List<IArgContainer> containers)
+    {
+        var container = serviceProvider.GetRequiredService<ArgContainer<T>>();
+        container.Arg.Value = arg;
+        containers.Add(container);
     }
 }

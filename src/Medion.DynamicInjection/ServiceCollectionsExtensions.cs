@@ -11,10 +11,11 @@ public static class ServiceCollectionsExtensions
     /// </summary>
     /// <typeparam name="T">The type of the argument.</typeparam>
     /// <param name="services">The service collection.</param>
+    /// <remarks>Must be called once for each type marked with <see cref="DynamicInjectAttribute"/></remarks>
     public static void AddDynamicInjectionArgType<T>(this IServiceCollection services) where T : class
     {
         services.TryAddSingleton<ArgContainer<T>>();
-        services.AddKeyedTransient<T>(new DynamicInjectionServiceKey(), (sp, _) =>
+        services.TryAddKeyedTransient<T>(new DynamicInjectionServiceKey(), (sp, _) =>
         {
             var argContainer = sp.GetRequiredService<ArgContainer<T>>();
             return argContainer.Arg.Value ?? throw new InvalidOperationException();
@@ -33,7 +34,7 @@ public static class ServiceCollectionsExtensions
             .Where(t => t != null)
             .SelectMany(t => t!.GetConstructors()
                 .SelectMany(c => c.GetParameters())
-                .Where(p => p.GetCustomAttribute<DynamicInjectionAttribute>() != null)
+                .Where(p => p.GetCustomAttribute<DynamicInjectAttribute>() != null)
                 .Select(p => p.ParameterType))
             .ToArray();
 
